@@ -1,7 +1,9 @@
-name: Build APK
+name: Build Android APK
 
 on:
   push:
+    branches: [ main, master ]
+  pull_request:
     branches: [ main, master ]
   workflow_dispatch:
 
@@ -10,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v4
       
     - name: Set up JDK 17
@@ -18,30 +20,82 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        cache: 'gradle'
     
-    - name: Install Android SDK
+    - name: Setup Android SDK
       uses: android-actions/setup-android@v3
-    
-    - name: Accept Android licenses
-      run: yes | sdkmanager --licenses || true
-    
-    - name: Install Android SDK packages
-      run: |
-        sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-    
-    - name: Initialize Gradle Wrapper
-      run: |
-        gradle wrapper --gradle-version 8.2
-    
-    - name: Make gradlew executable
-      run: chmod +x gradlew
-    
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace
       
-    - name: Upload APK
+    - name: Accept Android SDK licenses
+      run: yes | sdkmanager --licenses || true
+      
+    - name: Install Android SDK components
+      run: |
+        sdkmanager --install "platforms;android-34"
+        sdkmanager --install "build-tools;34.0.0"
+        sdkmanager --install "platform-tools"
+        
+    - name: Verify project structure
+      run: |
+        echo "=== Root directory ==="
+        ls -la
+        echo ""
+        echo "=== Looking for build.gradle files ==="
+        find . -name "build.gradle*" -type f
+        echo ""
+        echo "=== App directory ==="
+        if [ -d "app" ]; then
+          ls -la app/
+        else
+          echo "No app directory found in root"
+        fi
+        
+    - name: Setup Gradle
+      run: |
+        # Download and setup Gradle 8.2
+        wget -q https://services.gradle.org/distributions/gradle-8.2-bin.zip
+        unzip -q gradle-8.2-bin.zip
+        export PATH=$PATH:$PWD/gradle-8.2/bin
+        
+        # Initialize wrapper if it doesn't exist
+        if [ ! -f "gradlew" ]; then
+          echo "Creating Gradle wrapper..."
+          gradle-8.2/bin/gradle wrapper --gradle-version 8.2
+        fi
+        
+        # Make gradlew executable
+        chmod +x gradlew
+        
+    - name: Build Debug APK
+      run: |
+        export ANDROID_HOME=$ANDROID_SDK_ROOT
+        ./gradlew assembleDebug --stacktrace --info || {
+          echo "Build failed. Trying with gradle command directly..."
+          gradle-8.2/bin/gradle assembleDebug --stacktrace --info
+        }
+      
+    - name: Find and list APK files
+      if: always()
+      run: |
+        echo "=== Searching for APK files ==="
+        find . -name "*.apk" -type f
+        
+    - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: app-debug-apk
+        path: |
+          app/build/outputs/apk/debug/*.apk
+          **/build/outputs/apk/debug/*.apk
+        retention-days: 14
+        
+    - name: Upload build logs on failure
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: build-logs
+        path: |
+          **/build/reports/
+          **/build/outputs/logs/
+        retention-days: 7
+
