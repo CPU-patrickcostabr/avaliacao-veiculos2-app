@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Avaliação de Veículos</string>
+    
+    <!-- Menu Principal -->
+    <string name="menu_nova_avaliacao">Nova Avaliação</string>
+    <string name="menu_historico">Histórico</string>
+    <string name="menu_cadastros">Cadastros</string>
+    <string name="menu_configuracoes">Configurações</string>
+    
+    <!-- Cadastros -->
+    <string name="cadastro_veiculo">Cadastrar Veículo</string>
+    <string name="cadastro_item">Cadastrar Item</string>
+    <string name="cadastro_fornecedor">Cadastrar Fornecedor</string>
+    
+    <!-- Avaliação -->
+    <string name="nova_avaliacao">Nova Avaliação</string>
+    <string name="checklist">Checklist</string>
+    <string name="detalhes_avaliacao">Detalhes da Avaliação</string>
+    
+    <!-- Campos -->
+    <string name="placa">Placa</string>
+    <string name="modelo">Modelo</string>
+    <string name="ano">Ano</string>
+    <string name="nome">Nome</string>
+    <string name="categoria">Categoria</string>
+    <string name="valor">Valor</string>
+    <string name="descricao">Descrição</string>
+    <string name="tipo_servico">Tipo de Serviço</string>
+    <string name="contato">Contato</string>
+    <string name="observacoes">Observações</string>
+    <string name="fornecedor">Fornecedor</string>
+    <string name="quantidade">Quantidade</string>
+    <string name="estado">Estado</string>
+    
+    <!-- Botões -->
+    <string name="salvar">Salvar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="continuar">Continuar</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="compartilhar">Compartilhar</string>
+    <string name="camera">Câmera</string>
+    <string name="capturar_placa">Capturar Placa</string>
+    <string name="adicionar_foto">Adicionar Foto</string>
+    <string name="gerar_pdf">Gerar PDF</string>
+    
+    <!-- Mensagens -->
+    <string name="campo_obrigatorio">Campo obrigatório</string>
+    <string name="sucesso_salvar">Salvo com sucesso</string>
+    <string name="erro_salvar">Erro ao salvar</string>
+    <string name="confirmar_exclusao">Confirmar exclusão?</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
+    <string name="valor_total">Valor Total</string>
+    <string name="selecione_itens">Selecione os itens para avaliação</string>
+    
+    <!-- Estados -->
+    <string name="otimo">Ótimo</string>
+    <string name="bom">Bom</string>
+    <string name="regular">Regular</string>
+    <string name="ruim">Ruim</string>
+    <string name="pessimo">Péssimo</string>
+    <string name="necessita_reparo">Necessita Reparo</string>
+    
+    <!-- Permissões -->
+    <string name="permissao_camera">Permissão de câmera necessária</string>
+    <string name="permissao_armazenamento">Permissão de armazenamento necessária</string>
+</resources>
+

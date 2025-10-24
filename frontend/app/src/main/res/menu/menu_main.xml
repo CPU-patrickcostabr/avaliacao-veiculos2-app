@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <item
+        android:id="@+id/menu_cadastros"
+        android:title="@string/menu_cadastros">
+        <menu>
+            <item
+                android:id="@+id/menu_cadastro_item"
+                android:title="@string/cadastro_item" />
+            <item
+                android:id="@+id/menu_cadastro_fornecedor"
+                android:title="@string/cadastro_fornecedor" />
+            <item
+                android:id="@+id/menu_cadastro_veiculo"
+                android:title="@string/cadastro_veiculo" />
+        </menu>
+    </item>
+    
+</menu>
+
