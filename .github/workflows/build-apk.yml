@@ -21,17 +21,42 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     
+    - name: Verify project structure
+      run: |
+        echo "=== Listing project files ==="
+        ls -la
+        echo "=== Checking for build.gradle ==="
+        find . -name "build.gradle" -o -name "build.gradle.kts"
+        echo "=== Checking app directory ==="
+        ls -la app/ || echo "No app directory found"
+    
+    - name: Make gradlew executable
+      run: |
+        if [ -f "gradlew" ]; then
+          chmod +x gradlew
+          echo "gradlew found and made executable"
+        else
+          echo "gradlew not found, will use gradle command"
+        fi
+    
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
       with:
         gradle-version: 8.2
-        
-    - name: Build with Gradle
-      run: gradle assembleDebug
-      working-directory: ./
+    
+    - name: Build with Gradle (detailed logs)
+      run: |
+        if [ -f "gradlew" ]; then
+          ./gradlew assembleDebug --stacktrace --info
+        else
+          gradle assembleDebug --stacktrace --info
+        fi
       
     - name: Upload APK
       uses: actions/upload-artifact@v4
+      if: success()
       with:
         name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: |
+          app/build/outputs/apk/debug/*.apk
+          **/build/outputs/apk/debug/*.apk
